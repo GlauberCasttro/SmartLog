@@ -100,13 +100,13 @@ dotnet test --filter "Benchmark_GenerateReport"
 # ./tests/Intelligent.Logging.Tests/bin/Debug/net8.0/BenchmarkResults/
 
 # Abrir relatório HTML manualmente
-start ./tests/Intelligent.Logging.Tests/bin/Debug/net8.0/BenchmarkResults/BenchmarkResults.html
+start ./testes/SmartLog.Testes/bin/Debug/net8.0/BenchmarkResults/BenchmarkResults.html
 
 # Ver resultados em CSV
-type ./tests/Intelligent.Logging.Tests/bin/Debug/net8.0/BenchmarkResults/BenchmarkResults.csv
+type ./testes/SmartLog.Testes/bin/Debug/net8.0/BenchmarkResults/BenchmarkResults.csv
 
 # Ver histórico de performance
-type ./tests/Intelligent.Logging.Tests/bin/Debug/net8.0/BenchmarkResults/BenchmarkHistory.json
+type ./testes/SmartLog.Testes/bin/Debug/net8.0/BenchmarkResults/BenchmarkHistory.json
 ```
 
 ## 🏗️ Build e Test em Sequência

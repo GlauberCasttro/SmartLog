@@ -75,7 +75,7 @@ O **Intelligent Logging** é uma SDK que implementa um sistema de logging adapta
 ---
 
 ## ✅ **Checklist de Implementação Rápida**
-- [x] Instale o pacote `Intelligent.Logging.Core`
+- [x] Instale o pacote `SmartLog.Core`
 - [x] Configure o `SmartLogOptions` para seu ambiente
 - [x] Configure Serilog conforme exemplos
 - [x] (OBRIGATORIO) Configure Redis para sincronização

@@ -17,17 +17,17 @@ dotnet test --filter "Benchmark" --logger:console --verbosity:normal
 Após executar os benchmarks, são gerados 3 tipos de relatórios:
 
 ### 🌐 HTML Report (Visual)
-- **Localização**: `tests\Intelligent.Logging.Tests\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.html`
+- **Localização**: `testes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.html`
 - **Conteúdo**: Relatório visual completo com tabelas, gráficos e análises
 - **Uso**: Abra no navegador para visualização interativa
 
 ### 📋 JSON Report (Programático)
-- **Localização**: `tests\Intelligent.Logging.Tests\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.json`
+- **Localização**: `estes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.json`
 - **Conteúdo**: Dados estruturados com metadados do ambiente
 - **Uso**: Análises programáticas
 
 ### 📈 CSV Report (Planilhas)
-- **Localização**: `tests\Intelligent.Logging.Tests\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.csv`
+- **Localização**: `estes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\BenchmarkResults.csv`
 - **Conteúdo**: Dados tabulares para análise
 - **Uso**: Excel, Google Sheets, análises estatísticas
 
@@ -101,7 +101,7 @@ dotnet test -c Release --filter "Benchmark"
 ### Problema: Relatórios Não Gerados
 ```bash
 # Verificar se o diretório existe
-ls tests\Intelligent.Logging.Tests\bin\Debug\net8.0\BenchmarkResults\
+ls estes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\
 ```
 
 ### Problema: Memory Pressure Test Falha
