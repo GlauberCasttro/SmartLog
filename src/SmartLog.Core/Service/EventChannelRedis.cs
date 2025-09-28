@@ -109,7 +109,7 @@ internal class EventChannelRedis(IConnectionMultiplexer redisConnection, Logging
         await SetValueMessageTime(message);
 
         await UpdateValueSwitchTime(changeLevelType);
-        WriteLine($"[INFO]: Level alterado no POD {Environment.MachineName} para novo level {newLevel}");
+        WriteLine($"[INFO]: Level alterado no POD {Environment.MachineName} para novo level {newLevel} de forma {changeLevelType}.");
     }
 
     /// <summary>

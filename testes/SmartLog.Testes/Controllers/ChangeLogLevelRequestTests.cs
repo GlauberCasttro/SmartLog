@@ -100,7 +100,7 @@ public class ChangeLogLevelRequestTests
 
         // Assert
         validationResults.Should().NotBeEmpty();
-            validationResults.First().ErrorMessage.Should().Contain("Unsupported log level");
+            validationResults.First().ErrorMessage.Should().Contain("Log level não suportadado:");
         }
     [Theory]
     [InlineData("Error")]
@@ -259,7 +259,7 @@ public class ChangeLogLevelRequestTests
 
         // Assert
         validationResults.Should().HaveCount(1);
-        validationResults.First().ErrorMessage.Should().Contain("Unsupported log level");
+        validationResults.First().ErrorMessage.Should().Contain("Log level não suportadado:");
     }
 
     #endregion

@@ -78,7 +78,7 @@ internal static class HelpersService
             return true;
         }
 
-        errorMessage = $"Unsupported log level: '{level}'. Allowed values: {string.Join(", ", Enum.GetNames(typeof(LogEventLevel)))}";
+        errorMessage = $"Log level não suportadado: '{level}'. Valores permitidos: {string.Join(", ", Enum.GetNames(typeof(LogEventLevel)))}";
         return false;
     }
     
@@ -86,8 +86,6 @@ internal static class HelpersService
     /// Retorna os nomes dos valores do enum LogEventLevel.
     /// </summary>
     /// <returns>Array de strings com os nomes dos níveis de log.</returns>
-    internal static string[] GetLogEventLevelNames()
-    {
-        return Enum.GetNames(typeof(LogEventLevel));
-    }
+    internal static string[] GetLogEventLevelNames() => Enum.GetNames(typeof(LogEventLevel));
+    
 }

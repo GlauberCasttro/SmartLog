@@ -200,7 +200,7 @@ namespace SmartLog.Testes.Controllers
             // Assert
             isValid.Should().BeFalse("Level inválido não deveria ser aceito");
             validationResults.Should().NotBeEmpty();
-            validationResults.First().ErrorMessage.Should().Contain("Unsupported log level");
+            validationResults.First().ErrorMessage.Should().Contain("Log level não suportadado:");
         }
 
         [Fact]
