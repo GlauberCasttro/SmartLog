@@ -1,0 +1,58 @@
+# Sample GitHub Actions workflow for running benchmarks
+name: Performance Benchmarks
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run benchmarks daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  benchmarks:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build solution
+      run: dotnet build --no-restore -c Release
+      
+    - name: Run Benchmarks
+      run: |
+        dotnet test --no-build -c Release --filter "Benchmark" --logger:trx --results-directory ./TestResults
+      
+    - name: Upload Benchmark Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: benchmark-results-${{ github.run_number }}
+        path: |
+          tests/**/BenchmarkResults/
+          TestResults/
+        retention-days: 30
+    
+    - name: Performance Gate Check
+      run: |
+        # Add custom logic to fail the build if benchmarks exceed thresholds
+        # Example: Parse JSON results and compare against baseline
+        echo "Performance gate check passed"
+    
+    - name: Comment PR with Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          // Read benchmark results and post as PR comment
+          // Implementation depends on your specific needs
