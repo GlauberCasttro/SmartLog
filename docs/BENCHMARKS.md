@@ -101,7 +101,7 @@ dotnet test -c Release --filter "Benchmark"
 ### Problema: Relatórios Não Gerados
 ```bash
 # Verificar se o diretório existe
-ls estes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\
+ls testes\SmartLog.Testes\bin\Debug\net8.0\BenchmarkResults\
 ```
 
 ### Problema: Memory Pressure Test Falha
