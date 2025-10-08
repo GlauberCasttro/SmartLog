@@ -1,4 +1,4 @@
-# 📖 **INTELLIGENT LOGGING - ÍNDICE DE DOCUMENTAÇÃO**
+# 📖 **ÍNDICE DE DOCUMENTAÇÃO**
 
 > **Navegação completa da documentação do sistema de logging adaptativo**
 ---
