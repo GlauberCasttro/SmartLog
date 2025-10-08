@@ -1,6 +1,6 @@
-# 📚 **INTELLIGENT LOGGING - DOCUMENTAÇÃO COMPLETA (v1.0.0)**
+# 📚 **DOCUMENTAÇÃO COMPLETA (v1.0.0)**
 
-> **Sistema de Logging Adaptativo Inteligente para .NET 8**  
+> **Sistema de Logging Adaptativo para .NET 8**  
 > *Ajusta automaticamente a verbosidade de logs com base em métricas de erro em tempo real*
 
 > **Versão:** 1.0.0 &nbsp;|&nbsp; **Última atualização:** Setembro 2025
@@ -23,7 +23,7 @@
 - [Roadmap](#🎯-roadmap)
 ---
 ## 🎯 **VISÃO GERAL**
-O **Intelligent Logging** é uma SDK que implementa um sistema de logging adaptativo que ajusta automaticamente os níveis de verbosidade baseado na saúde da aplicação. Quando detecta anomalias (como picos de erro), aumenta temporariamente o detalhamento dos logs para facilitar o diagnóstico.
+O **Smart Logging** é uma SDK que implementa um sistema de logging adaptativo que ajusta automaticamente os níveis de verbosidade baseado na saúde da aplicação. Quando detecta anomalias (como picos de erro), aumenta temporariamente o detalhamento dos logs para facilitar o diagnóstico.
 
 - **High Verbosity Mode**: Ativa logs detalhados (Debug/Information) quando detecta problemas
 - **Buffer Circular**: Sistema de métricas otimizado para alta performance
@@ -33,7 +33,7 @@ O **Intelligent Logging** é uma SDK que implementa um sistema de logging adapta
 ---
 
 ## 🔄 **Comparativo de Configurações**
-| Aspecto | Serilog Tradicional | Intelligent Logging |
+| Aspecto | Serilog Tradicional | Smart Logging |
 |---------|-------------------|-------------------|
 | **Nível de Log** | Fixo (ex: Warning) | Adaptativo (Warning ↔ Information) |
 | **Configuração** | `MinimumLevel.Warning()` | `EconomyLevel = Warning`, `HighVerbosityLevel = Information` |
@@ -55,7 +55,7 @@ O **Intelligent Logging** é uma SDK que implementa um sistema de logging adapta
 
 ---
 
-## 🚀 **Por que usar Intelligent Logging?**
+## 🚀 **Por que usar Smart Logging?**
 - Ajuste automático da verbosidade dos logs conforme saúde da aplicação
 - Redução de custos operacionais e de armazenamento
 - Diagnóstico facilitado em cenários críticos
