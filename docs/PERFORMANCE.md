@@ -135,9 +135,7 @@ Console.WriteLine($"Memory Efficiency: {stats.TotalLogEvents}/{stats.BufferSizeL
 
 ## 🎯 PRÓXIMOS PASSOS
 
-1. **Testes de Carga**: Validar as otimizações em ambiente similar à produção
-2. **Profiling**: Usar dotMemory/PerfView para confirmar reduções
-4. **Tuning**: Ajustar configurações baseado no comportamento real
+1. **Possibilidade de personalizar os logs por dias das semana baseado em expressões CRON**:
 
 ---
 
