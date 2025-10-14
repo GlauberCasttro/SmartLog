@@ -1,6 +1,6 @@
 # 📚 **DOCUMENTAÇÃO COMPLETA (v1.0.0)**
 
-> **Sistema de Logging Adaptativo para .NET 8**  
+> **Sistema de Logging Adaptativo para .NET 8+**  
 > *Ajusta automaticamente a verbosidade de logs com base em métricas de erro em tempo real*
 
 > **Versão:** 1.0.0 &nbsp;|&nbsp; **Última atualização:** Setembro 2025
