@@ -1,4 +1,4 @@
-# 🧪 INTELLIGENT LOGGING - COMANDOS DE TESTE
+# 🧪 SMART LOGGING - COMANDOS DE TESTE
 
 ## ⚡ Execução Rápida
 ```bash
