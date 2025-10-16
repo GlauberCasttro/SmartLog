@@ -59,7 +59,7 @@ namespace SmartLog.Testes.Smart
         {
             // Act
             var detector = new SmartLogEconomyDetector(
-                _options, _registry, _levelSwitch, _mockRedis.Object, _mockSwitcher.Object);
+                _options, _registry, _levelSwitch, _mockRedis.Object, _mockSwitcher.Object, enableAutoDetection: false);
 
             // Assert
             detector.LastDecision.Should().NotBeNull();
@@ -96,13 +96,17 @@ namespace SmartLog.Testes.Smart
             }
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Adiciona poucos erros (abaixo do threshold)
             for (int i = 0; i < 3; i++)
             {
                 registry.RecordLogEvent(LogEventLevel.Error);
             }
+
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
+
 
             // Act
             await detector.RunDetectionCycleAsync();
@@ -149,7 +153,7 @@ namespace SmartLog.Testes.Smart
             }
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Adiciona muitos erros (acima do threshold)
             for (int i = 0; i < 10; i++)
@@ -207,13 +211,16 @@ namespace SmartLog.Testes.Smart
             }
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Adiciona o número específico de erros
             for (int i = 0; i < errorCount; i++)
             {
                 registry.RecordLogEvent(LogEventLevel.Error);
             }
+
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
 
             // Act
             await detector.RunDetectionCycleAsync();
@@ -261,13 +268,16 @@ namespace SmartLog.Testes.Smart
             }
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Adiciona erros para garantir detecção
             for (int i = 0; i < 10; i++)
             {
                 registry.RecordLogEvent(LogEventLevel.Error);
             }
+
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
 
             // Act - Executa múltiplas detecções simultaneamente
             var tasks = new List<Task>();
@@ -305,7 +315,7 @@ namespace SmartLog.Testes.Smart
             mockRedis.Setup(r => r.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(mockDatabase.Object);
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Act & Assert - Não deve lançar exceção
             detector.Dispose();
@@ -348,10 +358,12 @@ namespace SmartLog.Testes.Smart
                          .ReturnsAsync(new RedisValue(timestampRecente));
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // NÃO adiciona erros - força sistema a sugerir EconomyLevel (Information)
             // Isso simula Debug → Information (diminuindo verbosidade)
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
 
             // Act
             await detector.RunDetectionCycleAsync();
@@ -410,7 +422,10 @@ namespace SmartLog.Testes.Smart
             }
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
+            
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
 
             // Act
             await detector.RunDetectionCycleAsync();
@@ -462,13 +477,16 @@ namespace SmartLog.Testes.Smart
                          .ReturnsAsync(new RedisValue(timestampAntigo));
 
             var detector = new SmartLogEconomyDetector(
-                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object);
+                options, registry, levelSwitch, mockRedis.Object, mockSwitcher.Object, enableAutoDetection: false);
 
             // Adiciona erros suficientes para forçar mudança para Debug (diminuir verbosidade)
             for (int i = 0; i < 8; i++)
             {
                 registry.RecordLogEvent(LogEventLevel.Error);
             }
+
+            // ✅ Pequeno delay para garantir consistência temporal
+            await Task.Delay(50);
 
             // Act
             await detector.RunDetectionCycleAsync();

@@ -7,6 +7,7 @@ using SmartLog.Core.Models;
 using StackExchange.Redis;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using static System.Console;
 
 namespace SmartLog.Core.Service;
 
@@ -30,7 +31,8 @@ internal class SmartLogEconomyDetector : ISmartLogEconomyDetector
         MetricsRegistry registry,
         LoggingLevelSwitch levelSwitch,
         IConnectionMultiplexer redis,
-        ILogLevelSwitcherService logLevelSwitcherService)
+        ILogLevelSwitcherService logLevelSwitcherService,
+       bool enableAutoDetection = true)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options), "SmartLogOptions cannot be null.");
         _metricsRegistry = registry ?? throw new ArgumentNullException(nameof(registry), "MetricsRegistry cannot be null.");
@@ -46,7 +48,28 @@ internal class SmartLogEconomyDetector : ISmartLogEconomyDetector
             ShouldSwitchToHighVerbosity = false
         };
 
-        _detectionTimer = new Timer(RunDetectionCycleCallback, null, TimeSpan.Zero, _options.DetectionInterval);
+        if (enableAutoDetection) _detectionTimer = new Timer(RunDetectionCycleCallback, null, TimeSpan.Zero, _options.DetectionInterval);
+    }
+
+    /// <summary>
+    /// Timer callback thread-safe com proteção contra falhas críticas.
+    /// Executa detecção de anomalias de forma assíncrona sem bloquear o timer.
+    /// </summary>
+    private void RunDetectionCycleCallback(object? state)
+    {
+        Task.Run(async () =>
+        {
+            try
+            {
+                await RunDetectionCycleAsync();
+            }
+            catch (Exception ex)
+            {
+                // ✅ Log crítico para debugging - NÃO reset redundante de lock
+                // O finally do RunDetectionCycleAsync já garante a liberação do lock
+                WriteLine($"[CRITICAL] SmartLogEconomyDetector timer callback failed: {ex}");
+            }
+        });
     }
 
     /// <summary>
@@ -80,7 +103,7 @@ internal class SmartLogEconomyDetector : ISmartLogEconomyDetector
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ERROR] Failed to run detection cycle: {ex.Message}");
+            WriteLine($"[ERROR] Failed to run detection cycle: {ex.Message}");
         }
         finally
         {
@@ -112,12 +135,6 @@ internal class SmartLogEconomyDetector : ISmartLogEconomyDetector
                 HealthScore = errorCount
             };
     }
-
-    /// <summary>
-    /// CallBackpara o timer que executa o ciclo de detecção.
-    /// </summary>
-    /// <param name="state"></param>
-    private void RunDetectionCycleCallback(object state) => _ = RunDetectionCycleAsync();
 
     /// <summary>
     /// Publica uma evento no channel do Redis para alterar o nível de log.
