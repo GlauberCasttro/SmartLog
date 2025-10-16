@@ -70,7 +70,7 @@ O **Smart Logging** é uma SDK que implementa um sistema de logging adaptativo q
 | .NET               | 8.0           | Recomendado >= 8.0       |
 | Serilog            | 3.0           | Logging principal        |
 | Redis              | 5.0           | Opcional, para sync      |
-| ASP.NET Core       | 8.0+          | Web API/MVC/Worker      |
+| ASP.NET Core       | 8.0+          | Web API/Worker           |
 
 ---
 
@@ -79,6 +79,7 @@ O **Smart Logging** é uma SDK que implementa um sistema de logging adaptativo q
 - [x] Configure o `SmartLogOptions` para seu ambiente
 - [x] Configure Serilog conforme exemplos
 - [x] (OBRIGATORIO) Configure Redis para sincronização
+- [x] Configure os exemplos via builder ou launchsettings preencher SmartLogOptions
 - [x] Teste endpoints de status e métricas
 - [x] Valide logs e switches automáticos
 - [x] Implemente monitoramento e alertas sugeridos
@@ -95,7 +96,7 @@ O **Smart Logging** é uma SDK que implementa um sistema de logging adaptativo q
 | MinimumHighVerbosityDurationInMinute | Tempo mínimo em modo detalhado antes de retornar ao modo econômico                      | 1 (dev), 30 (prod)                          | int (minutos)     |
 | AbsoluteErrorThreshold        | Quantidade absoluta de erros para disparar modo detalhado                                        | 15 (dev), 50 (prod), 5 (baixo volume)        | int               |
 | LogWindowSeconds              | Janela temporal (em segundos) para contagem dos erros                                            | 60 (dev), 300 (prod)                        | int (segundos)    |
-| EnableRedisChannelListener    | Permite comandos externos via Redis para sincronização de nível de log entre instâncias          | true (prod), false (dev)                    | bool              |
+| EnableRedisChannelListener    | Permite comandos externos via Redis para sincronização de nível de log entre instâncias          | true always                  | bool              |
 | LoadWorkerSincronizedInMinute | Intervalo de sincronização do worker de log via Redis                                            | 5                                           | int (minutos)     |
 
 **Documentação dos Enums:**

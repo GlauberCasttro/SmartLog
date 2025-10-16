@@ -1,4 +1,4 @@
-# 📊 Intelligent Logging - Performance Benchmarks
+# 📊 Smart Logging - Performance Benchmarks
 
 ## 🚀 Como Executar os Benchmarks
 

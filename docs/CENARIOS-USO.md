@@ -1,4 +1,4 @@
-# 🎯 **CENÁRIOS DE USO AVANÇADOS - INTELLIGENT LOGGING**
+# 🎯 **CENÁRIOS DE USO AVANÇADOS - SMART LOGGING**
 
 > **Exemplos práticos e configurações especializadas para diferentes tipos de aplicação**
 

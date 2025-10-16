@@ -106,16 +106,6 @@ services.AddSmartLogEconomy(configuration, options =>
 });
 ```
 
-## 📈 IMPACTO ESPERADO
-
-| Métrica | Antes | Depois | Melhoria |
-|---------|-------|--------|----------|
-| **CPU Usage** | ~15% | ~2% | **-87%** |
-| **Memory Growth** | Linear | Constante | **-95%** |
-| **Timer Frequency** | 60s | 120min | **-99.2%** |
-| **Queue Operations** | O(n) sempre | O(1) batch | **-90%** |
-| **Redis Calls** | Desnecessárias | Apenas quando habilitado | **-100%** |
-
 ## 🔍 MONITORING
 
 ### **Métricas para Acompanhar**
