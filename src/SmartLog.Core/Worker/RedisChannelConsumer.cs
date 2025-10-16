@@ -49,7 +49,7 @@ public class RedisChannelConsumer(IEventChannelRedis eventChannelRedis) : IHoste
     /// <returns></returns>
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        WriteLine("[INFO]: Stopping Redis channel consumer...");
+        WriteLine("[INFO]: Stopping  Redis channel consumer...");
         return Task.CompletedTask;
     }
 }

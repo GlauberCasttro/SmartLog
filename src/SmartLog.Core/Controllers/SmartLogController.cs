@@ -6,11 +6,7 @@ using SmartLog.Core.Helpers;
 using SmartLog.Core.Interfaces;
 using SmartLog.Core.Models;
 using SmartLog.Core.Service;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartLog.Core.Controllers;
 

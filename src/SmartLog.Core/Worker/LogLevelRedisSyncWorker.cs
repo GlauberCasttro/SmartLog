@@ -40,7 +40,7 @@ public class LogLevelRedisSyncWorker(
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(_options.LoadWorkerSincronizedInMinute));
         await SyncLogLevelFromRedis().ConfigureAwait(false);
 
-        WriteLine($"[INFO]: Continuous monitoring enabled - checking every 5 minutes. Log recomendado atual: {_smartLogEconomyDetector.LastDecision.RecommendedLevel}");
+        WriteLine($"[INFO]: Continuous monitoring enabled - checking every 5 minutes. Log recomendado atual pela SDK: {_smartLogEconomyDetector.LastDecision.RecommendedLevel}");
 
         while (await timer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false))
         {

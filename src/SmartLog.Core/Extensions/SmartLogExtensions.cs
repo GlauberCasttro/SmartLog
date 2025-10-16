@@ -10,8 +10,8 @@ using SmartLog.Core.Models;
 using SmartLog.Core.Service;
 using SmartLog.Core.Worker;
 using StackExchange.Redis;
-using static System.Console;
 using System.Diagnostics.CodeAnalysis;
+using static System.Console;
 
 namespace SmartLog.Core.Extensions;
 
@@ -82,8 +82,7 @@ public static class SmartLogExtensions
         try
         {
             // Obtém o assembly principal da aplicação
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-                                 ?? throw new ArgumentNullException(nameof(configuration), "ASPNETCORE_ENVIRONMENT não definido");
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? throw new ArgumentNullException(nameof(configuration), "ASPNETCORE_ENVIRONMENT não definido");
 
             var options = new SmartLogOptions(environment);
             if (actionConfig != null)
@@ -103,7 +102,7 @@ public static class SmartLogExtensions
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ERROR]: Falha ao carregar configuração da SDK não será possível habilitar em {Environment.MachineName}: Erro: {ex.Message}");
+            WriteLine($"[ERROR]: Falha ao carregar configuração da SDK não será possível habilitar em {Environment.MachineName}: Erro: {ex.Message}");
             throw;
         }
     }
@@ -147,7 +146,7 @@ public static class SmartLogExtensions
         catch (Exception ex)
         {
             WriteLine($"[ERROR]: Erro ao conectar no redis... {ex.Message}");
-            throw new InvalidOperationException("Falha ao configurar a conexão com o Redis.", ex);
+            throw new InvalidOperationException("Falha ao configurar a conexão com o Redis...", ex);
         }
     }
 
@@ -158,9 +157,6 @@ public static class SmartLogExtensions
     /// <param name="options"></param>
     private static void StartRedisChannelListenerIfEnabled(IServiceCollection services, SmartLogOptions options)
     {
-        if (options.EnableRedisChannelListener)
-        {
-            services.AddSingleton<IEventChannelRedis, EventChannelRedis>();
-        }
+        if (options.EnableRedisChannelListener) services.AddSingleton<IEventChannelRedis, EventChannelRedis>();
     }
 }

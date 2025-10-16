@@ -32,29 +32,29 @@ internal class EventChannelRedis(IConnectionMultiplexer redisConnection, Logging
         try
         {
               var channel = RedisChannel.Literal(GlobalConfig.GetRedisKeyChannel(options.AppName));
-              await _subscriber.SubscribeAsync(channel, async (_, redisValue) =>
+              await _subscriber.SubscribeAsync(channel, async (_, eventVerbosity) =>
               {
                     // Usando a extensão direto no RedisValue
-                    if (!redisValue.TryParseLogMessage(out var incomingLevel, out var incomingType, out var _)) return;
+                    if (!eventVerbosity.TryParseLogMessage(out var incomingLevel, out var incomingType, out var _)) return;
 
                     //Valor atual do Redis
-                    var currentValue = await _database.StringGetAsync(GlobalConfig.GetRedisKeyChannel(options.AppName));
+                    var currentEvent = await _database.StringGetAsync(GlobalConfig.GetRedisKeyChannel(options.AppName));
 
-                    if (!currentValue.HasValue)
+                    if (!currentEvent.HasValue)
                     {
-                        await ApplyLogLevel(levelSwitch, incomingLevel, incomingType, redisValue);
+                        await ApplyLogLevel(levelSwitch, incomingLevel, incomingType, eventVerbosity);
                         return;
                     }
 
                     //lógica de verificação de tipo e expiração
-                    if (!currentValue.TryParseLogMessage(out LogEventLevel _, out var currentType, out var currentExpiration)) return;
+                    if (!currentEvent.TryParseLogMessage(out LogEventLevel _, out var currentType, out var currentExpiration)) return;
 
                     if (CanApplyChange(
                         incomingType,
                         currentType,
                         currentExpiration)) 
                     {
-                        await ApplyLogLevel(levelSwitch, incomingLevel, incomingType, redisValue);
+                        await ApplyLogLevel(levelSwitch, incomingLevel, incomingType, eventVerbosity);
                     }
                     else if (incomingType == LogChangeType.Automatico && currentType == LogChangeType.Manual)
                     {
@@ -70,7 +70,7 @@ internal class EventChannelRedis(IConnectionMultiplexer redisConnection, Logging
         }
         catch (Exception ex)
         {
-            WriteLine($"[ERROR]: Falha ao consumir canal Redis: {ex}, Maquina: {Environment.MachineName}");
+            WriteLine($"[ERROR]: Falha ao consumir canal Redis: {ex}, POD: {Environment.MachineName}");
         }
 
         await Task.CompletedTask;

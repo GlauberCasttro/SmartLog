@@ -5,6 +5,7 @@ using SmartLog.Core.Interfaces;
 using SmartLog.Core.Models;
 using StackExchange.Redis;
 using System.Diagnostics.CodeAnalysis;
+using static System.Console;
 
 namespace SmartLog.Core.Service;
 
@@ -33,17 +34,14 @@ internal class MediatorLogLevelSwitcher(IConnectionMultiplexer redisConnection, 
         // 1. Formata a mensagem com os parâmetros recebidos diretamente.
         var formattedMessage = HelpersService.FormatLogLevelMessage(newLevel, changeType, expirationInMinutes);
 
-        //Se opção de persistência para todos as pods estiver desabilitada, apenas publica a mensagem.
         if (options.EnableRedisChannelListener)
         {
             var channel = GlobalConfig.GetRedisKeyChannel(_options.AppName);
 
-            // 4. Publica a mensagem no canal do Redis.
             await _redisSubscriber.PublishAsync(RedisChannel.Literal(channel), formattedMessage);
             return;
         }
 
-        //Se não quer ler o canal, criar apenas no redis para o worker processar
-        Console.WriteLine($"[DEBUG] Redis channel listener is disabled. Skipping publish to Redis channel but updating location: {formattedMessage}");
+        WriteLine($"[DEBUG] Redis channel listener is disabled. Skipping publish to Redis channel but updating location: {formattedMessage}");
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
-using SmartLog.Core.Service;
 
-namespace SmartLog.Core.Helpers;
+namespace SmartLog.Core.Service;
 
 /// <summary>
 /// Um Sink customizado do Serilog que intercepta todos os eventos de log gerados,

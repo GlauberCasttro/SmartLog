@@ -2,10 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
-using SmartLog.Core.Helpers;
 using SmartLog.Core.Models;
 using SmartLog.Core.Service;
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SmartLog.Core.Extensions;
