@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using SmartLog.Core.Models;
 using SmartLog.Core.Service;
 using System.Diagnostics.CodeAnalysis;
@@ -22,7 +23,7 @@ public static class HostBuilderExtensions
     /// <returns></returns>
     public static IHostBuilder UseSmartLogWithConfigurator(
         this IHostBuilder hostBuilder,
-        Func<HostBuilderContext, 
+        Func<HostBuilderContext,
             IServiceProvider, LoggerConfiguration, LoggerConfiguration> configureMainLogger)
     {
         ArgumentNullException.ThrowIfNull(configureMainLogger);
@@ -48,7 +49,7 @@ public static class HostBuilderExtensions
     }
 
     /// <summary>
-    /// Altera o novel de log   inicial do levelSwitch
+    /// Altera o nível de log inicial do levelSwitch
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
@@ -59,6 +60,21 @@ public static class HostBuilderExtensions
         levelSwitch.MinimumLevel = configLevel.EconomyLevel;
         return levelSwitch;
     }
+
+    /// <summary>
+    /// Aplica o controle de nível via levelSwitch com suporte a force logging
+    /// Permite que logs de QUALQUER NÍVEL com force=true sejam processados mesmo quando
+    /// o nível de verbosidade estiver configurado como Error
+    /// Permite TODOS os logs chegarem ao filtro
+    // With(new ForceLoggingInterceptor(levelSwitch));
+    // Pode configurar diferentes propriedades
+    /// </summary>
+    /// <param name="loggerConfig"></param>
+    /// <param name="levelSwitch"></param>
+    /// <returns></returns>
+    private static LoggerConfiguration ApplyLevelSwitchWithInterceptor(LoggerConfiguration loggerConfig, LoggingLevelSwitch levelSwitch) => loggerConfig
+        .MinimumLevel.Verbose() 
+        .Filter.With(new ForceLoggingInterceptor(levelSwitch, ["force"]));
 
     /// <summary>
     /// Aplica o controle de nível via levelSwitch
@@ -77,6 +93,7 @@ public static class HostBuilderExtensions
 
     /// <summary>
     /// Configura o logger global (sink + encaminhamento para o principal)
+    /// Logs de QUALQUER NÍVEL com force=true são processados de forma síncrona
     /// </summary>
     /// <param name="loggerConfig"></param>
     /// <param name="metricsRegistry"></param>
@@ -84,5 +101,7 @@ public static class HostBuilderExtensions
     private static void ConfigureGlobalLogger(LoggerConfiguration loggerConfig, MetricsRegistry metricsRegistry, ILogger mainLogger) => loggerConfig
             .MinimumLevel.Verbose()
             .WriteTo.Sink(new LogCountingSink(metricsRegistry))
-            .WriteTo.Logger(mainLogger);
+            .WriteTo.Logger(mainLogger,
+                restrictedToMinimumLevel: LogEventLevel.Verbose,
+                levelSwitch: null); // Garante processamento síncrono para todos os logs forçados
 }

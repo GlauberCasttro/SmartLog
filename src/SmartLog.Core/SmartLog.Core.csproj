@@ -8,7 +8,7 @@
 	  <!-- ✅ CONFIGURAÇÃO PARA PACOTE NUGET -->
 	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	  <PackageId>SmartLog.Core</PackageId>
-	  <PackageVersion>1.0.1</PackageVersion>
+	  <PackageVersion>1.0.0</PackageVersion>
 	  <Authors>Glauber Castro</Authors>
 	  <Description>Sistema inteligente de logging adaptativo para aplicações .NET</Description>
 	  <PackageTags>logging;serilog;redis;intelligent;adaptive</PackageTags>
