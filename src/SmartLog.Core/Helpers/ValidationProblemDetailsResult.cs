@@ -6,7 +6,7 @@ namespace SmartLog.Core.Helpers;
 /// <summary>
 /// Formata retorno de erros de validação de modelo
 /// </summary>
-public class ValidationProblemDetailsResult : IActionResult
+internal class ValidationProblemDetailsResult : IActionResult
 {
     /// <summary>
     /// Apenas para personalizar a saida de erros de modelState
@@ -18,8 +18,7 @@ public class ValidationProblemDetailsResult : IActionResult
         var errors = context.ModelState
             .Where(kvp => kvp.Value.Errors.Count > 0)
             .SelectMany(kvp => kvp.Value.Errors)
-            .Select(e => e.ErrorMessage)
-        .ToList();
+            .Select(e => e.ErrorMessage);
 
         var objectResult = new ObjectResult(new { Erros = errors }) { StatusCode = StatusCodes.Status400BadRequest };
 

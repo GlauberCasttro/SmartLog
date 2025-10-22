@@ -1,14 +1,15 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
+using SmartLog.Core.Service;
 
-namespace SmartLog.Core.Service;
+namespace SmartLog.Core.Interceptors;
 
 /// <summary>
 /// Um Sink customizado do Serilog que intercepta todos os eventos de log gerados,
 /// antes mesmo do filtro de nível (LoggingLevelSwitch) ser aplicado.
 /// Seu único propósito é registrar os eventos no MetricsRegistry para análise de saúde.
 /// </summary>
-internal class LogCountingSink(MetricsRegistry metricsRegistry) : ILogEventSink
+internal class LogCountingInterceptor(MetricsRegistry metricsRegistry) : ILogEventSink
 {
     private readonly MetricsRegistry _metricsRegistry = metricsRegistry;
 

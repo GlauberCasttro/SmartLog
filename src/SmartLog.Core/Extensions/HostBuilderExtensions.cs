@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using SmartLog.Core.Interceptors;
 using SmartLog.Core.Models;
 using SmartLog.Core.Service;
 using System.Diagnostics.CodeAnalysis;
@@ -106,7 +107,7 @@ public static class HostBuilderExtensions
     /// <param name="mainLogger"></param>
     private static void ConfigureGlobalLogger(LoggerConfiguration loggerConfig, MetricsRegistry metricsRegistry, ILogger mainLogger) => loggerConfig
             .MinimumLevel.Verbose()
-            .WriteTo.Sink(new LogCountingSink(metricsRegistry))
+            .WriteTo.Sink(new LogCountingInterceptor(metricsRegistry))
             .WriteTo.Logger(mainLogger,
                 restrictedToMinimumLevel: LogEventLevel.Verbose,
                 levelSwitch: null); // Garante processamento síncrono para todos os logs forçados

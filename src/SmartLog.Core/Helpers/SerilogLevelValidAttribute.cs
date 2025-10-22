@@ -5,7 +5,7 @@ namespace SmartLog.Core.Helpers;
 /// <summary>
 /// Validation
 /// </summary>
-public class SerilogLevelValidAttribute : ValidationAttribute
+internal class SerilogLevelValidAttribute : ValidationAttribute
 {
     /// <summary>
     /// Apenas para validar o model de entrada
