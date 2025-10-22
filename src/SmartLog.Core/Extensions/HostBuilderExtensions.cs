@@ -72,17 +72,23 @@ public static class HostBuilderExtensions
     /// <param name="loggerConfig"></param>
     /// <param name="levelSwitch"></param>
     /// <returns></returns>
-    private static LoggerConfiguration ApplyLevelSwitchWithInterceptor(LoggerConfiguration loggerConfig, LoggingLevelSwitch levelSwitch) => loggerConfig
-        .MinimumLevel.Verbose() 
-        .Filter.With(new ForceLoggingInterceptor(levelSwitch, ["force"]));
+    private static LoggerConfiguration ApplyLevelSwitch(LoggerConfiguration loggerConfig, LoggingLevelSwitch levelSwitch, bool addInterceptorFlag = false)
+    {
+        if (addInterceptorFlag)
+        {
 
-    /// <summary>
-    /// Aplica o controle de nível via levelSwitch
-    /// </summary>
-    /// <param name="loggerConfig"></param>
-    /// <param name="levelSwitch"></param>
-    /// <returns></returns>
-    private static LoggerConfiguration ApplyLevelSwitch(LoggerConfiguration loggerConfig, LoggingLevelSwitch levelSwitch) => loggerConfig.MinimumLevel.ControlledBy(levelSwitch);
+            //Aumenta a quantidade de logs que chegam ao filtro, mas da a possibilidade de informar flags, em logs mais verbosos, forçando o log
+            //Por exemplo se seu app tiver com a verbosidade de error/warning, mas existem alguns logs que voce não quer logar como Warning, mas que ter o registro do mesmo. 
+            //Consegue configurar uma flag por exemplo force, passando como true, logando esse registro
+            //Log.Information("Teste de informação com o force {Numero}, Force: {force}", 1, true);
+            return loggerConfig
+             .MinimumLevel.Verbose()
+             .Filter.With(new ForceLoggingInterceptor(levelSwitch, ["force"]));
+        }
+
+        //Limita o controle de todo log que passa pela pipeline do serilog
+        return loggerConfig.MinimumLevel.ControlledBy(levelSwitch);
+    }
 
     /// <summary>
     /// Cria o logger principal a partir da configuração

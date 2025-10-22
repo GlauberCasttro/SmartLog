@@ -31,38 +31,32 @@ public static class SmartLogExtensions
         IConfiguration configuration,
         Action<SmartLogOptions> actionConfig = null)
     {
-        // Configura e registra as opções da SDK
-        SmartLogOptions options = GetSmartOptions(configuration, actionConfig);
-
-        services.AddSingleton(options);
+        SmartLogOptions options = RegisterLogOptions(configuration, services, actionConfig);
 
         // Registra componentes principais
         RegisterCoreServices(services, options);
 
         // Configura Redis
-        AddRedis(services);
+        RegisterRedis(services, options);
 
         // Inicia listener Redis se habilitado
         StartRedisChannelListenerIfEnabled(services, options);
 
-        AddBackGroundServices(services, options);
+        RegisterBackGroundServices(services, options);
 
         ConfigureProblemDetaisResul(services);
 
         return services;
     }
 
-    private static void ConfigureProblemDetaisResul(IServiceCollection services)
-    {
-        services.Configure<ApiBehaviorOptions>(x => x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult());
-    }
+    private static void ConfigureProblemDetaisResul(IServiceCollection services) => services.Configure<ApiBehaviorOptions>(x => x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult());
 
     /// <summary>
     /// Adiciona o concumer do channel
     /// Adiciona o Worker Sync para quando uma POD nova nascer...
     /// </summary>
     /// <param name="services"></param>
-    private static void AddBackGroundServices(IServiceCollection services, SmartLogOptions options)
+    private static void RegisterBackGroundServices(IServiceCollection services, SmartLogOptions options)
     {
         if (options.EnableRedisChannelListener)
         {
@@ -77,7 +71,7 @@ public static class SmartLogExtensions
     /// <param name="configuration"></param>
     /// <param name="actionConfig"></param>
     /// <returns></returns>
-    private static SmartLogOptions GetSmartOptions(IConfiguration configuration, Action<SmartLogOptions> actionConfig)
+    private static SmartLogOptions RegisterLogOptions(IConfiguration configuration, IServiceCollection services, Action<SmartLogOptions> actionConfig)
     {
         try
         {
@@ -91,13 +85,14 @@ public static class SmartLogExtensions
                 return options;
             }
 
-            if (environment.Equals("prd"))
-                configuration.GetSection("smartLogEconomy-prd").Bind(options);
+            if (string.Equals(environment, "prd", StringComparison.OrdinalIgnoreCase))
+                configuration.GetSection("smartLog-prd").Bind(options);
             else
-                configuration.GetSection("smartLogEconomy-dev").Bind(options);
+                configuration.GetSection("smartLog-dev").Bind(options);
 
             options.Validate();
 
+            services.AddSingleton(options);
             return options;
         }
         catch (Exception ex)
@@ -134,7 +129,7 @@ public static class SmartLogExtensions
     /// <param name="services"></param>
     /// <param name="configuration"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    private static void AddRedis(IServiceCollection services)
+    private static void RegisterRedis(IServiceCollection services, SmartLogOptions smartLog)
     {
         try
         {
@@ -145,8 +140,8 @@ public static class SmartLogExtensions
         }
         catch (Exception ex)
         {
-            WriteLine($"[ERROR]: Erro ao conectar no redis... {ex.Message}");
-            throw new InvalidOperationException("Falha ao configurar a conexão com o Redis...", ex);
+            WriteLine($"[ERROR]: Erro ao conectar no redis, não será configuado a alteração de log distribuido na máquina {Environment.MachineName}... Error: {ex.Message}");
+            smartLog.EnableRedisChannelListener = false;
         }
     }
 

@@ -31,13 +31,12 @@ public class ForceLoggingInterceptor(LoggingLevelSwitch levelSwitch, IEnumerable
         foreach (var prop in _specialPropertyNames)
         {
             if (logEvent.Properties.TryGetValue(prop, out var value)
-                && value is ScalarValue scalar
-                && scalar.Value is bool boolValue
-                && boolValue)
+                && value is ScalarValue scalar && scalar.Value is bool boolValue && boolValue)
             {
                 return true;
             }
         }
+
         return false;
     }
 }
