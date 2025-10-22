@@ -55,7 +55,7 @@ internal class SmartLogEconomyDetector : ISmartLogEconomyDetector
     /// Timer callback thread-safe com proteção contra falhas críticas.
     /// Executa detecção de anomalias de forma assíncrona sem bloquear o timer.
     /// </summary>
-    private void RunDetectionCycleCallback(object? state)
+    private void RunDetectionCycleCallback(object state)
     {
         Task.Run(async () =>
         {
