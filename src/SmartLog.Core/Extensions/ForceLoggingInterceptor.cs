@@ -26,17 +26,7 @@ public class ForceLoggingInterceptor(LoggingLevelSwitch levelSwitch, IEnumerable
     /// <summary>
     /// Verifica se o log tem alguma propriedade especial igual a true
     /// </summary>
-    private bool HasForceProperty(LogEvent logEvent)
-    {
-        foreach (var prop in _specialPropertyNames)
-        {
-            if (logEvent.Properties.TryGetValue(prop, out var value)
-                && value is ScalarValue scalar && scalar.Value is bool boolValue && boolValue)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    private bool HasForceProperty(LogEvent logEvent) => _specialPropertyNames.Any(prop =>
+                logEvent.Properties.TryGetValue(prop, out var value)
+                && value is ScalarValue { Value: true });
 }

@@ -19,9 +19,10 @@ namespace SmartLog.Api.Controllers
         }
 
         [HttpGet("info")]
-        public IActionResult GetInfo(int quantidadeInfo = 10)
+        public IActionResult GetInfo()
         {
             Log.Information("Teste de informação sem o force: {Numero}", 1);
+            //Se estiver configurado o ForceLoggingInterceptor, apenas esse log será registrado mesmo com o nível de verbosidade baixo
             Log.Information("Teste de informação com o force {Numero}, Force: {force}", 1, true);
 
             return Ok();
