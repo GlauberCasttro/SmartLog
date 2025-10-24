@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+Ôªøusing Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
@@ -10,19 +10,19 @@ using System.Diagnostics.CodeAnalysis;
 namespace SmartLog.Core.Extensions;
 
 /// <summary>
-/// ConfiguraÁ„o para adicionar o serilog - Vers„o 2 com ConfiguraÁ„o Fluente SEM DUPLICA«√O
+/// Configura√ß√£o para adicionar o serilog - Vers√£o 2 com Configura√ß√£o Fluente SEM DUPLICA√á√ÉO
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class HostBuilderExtensions
 {
     /// <summary>
-    /// Configurador com API fluente. Se n„o informar o Builder ir· ser construÌdo os logs com seguinte formato.
-    /// Considerando melhores pr·ticas de logs com render compact.
+    /// Configurador com API fluente. Se n√£o informar o Builder ir√° ser constru√≠do os logs com seguinte formato.
+    /// Considerando melhores pr√°ticas de logs com render compact.
     /// Considerando Overrides da Microsoft como Warning
     /// E adicionando o contexto do serilog
     /// </summary>
     /// <param name="hostBuilder"></param>
-    /// <param name="configure">FunÁ„o para configurar o logger de forma fluente (opcional)</param>
+    /// <param name="configure">Fun√ß√£o para configurar o logger de forma fluente (opcional)</param>
     /// <returns></returns>
     public static IHostBuilder UseSmartLogFluent(this IHostBuilder hostBuilder, Action<FluentLoggerBuilder> configure = null)
     {
@@ -32,13 +32,13 @@ public static class HostBuilderExtensions
             var metricsRegistry = services.GetRequiredService<MetricsRegistry>();
 
             // Cria o builder fluente que configura diretamente o logger global
-            // N√O lÍ configuraÁ„o do appsettings.json para evitar conflitos
+            // N√ÉO l√™ configura√ß√£o do appsettings.json para evitar conflitos
             var builder = new FluentLoggerBuilder(loggerConfig, context, readFromConfiguration: false);
 
             bool forceLoggingEnabled = false;
             string[] forceLoggingProperties = ["force"];
 
-            // Aplica configuraÁ„o customizada se fornecida, sen„o aplica padr„o
+            // Aplica configura√ß√£o customizada se fornecida, sen√£o aplica padr√£o
             if (configure != null)
             {
                 configure(builder);
@@ -47,20 +47,20 @@ public static class HostBuilderExtensions
             }
             else
             {
-                // ConfiguraÁ„o padr„o apenas se n„o h· customizaÁ„o
+                // Configura√ß√£o padr√£o apenas se n√£o h√° customiza√ß√£o
                 builder
                 .WithConsole(renderCompact: true)
                 .WithMicrosoftOverrides()
                 .WithFromContext();
             }
 
-            //Aplica as configuraÁıes de nÌvel com suporte a force logging
+            //Aplica as configura√ß√µes de n√≠vel com suporte a force logging
             ApplyLevelSwitch(loggerConfig, levelSwitch, metricsRegistry, builder);
         });
     }
 
     /// <summary>
-    /// Altera o nÌvel de log inicial do levelSwitch
+    /// Altera o n√≠vel de log inicial do levelSwitch
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
@@ -74,7 +74,7 @@ public static class HostBuilderExtensions
     }
 
     /// <summary>
-    /// Aplica o controle de nÌvel via levelSwitch com suporte a force logging
+    /// Aplica o controle de n√≠vel via levelSwitch com suporte a force logging
     /// </summary>
     /// <param name="loggerConfig"></param>
     /// <param name="levelSwitch"></param>
@@ -83,13 +83,13 @@ public static class HostBuilderExtensions
     /// <returns></returns>
     private static LoggerConfiguration ApplyLevelSwitch(LoggerConfiguration loggerConfig, LoggingLevelSwitch levelSwitch, MetricsRegistry metricsRegistry, FluentLoggerBuilder builder)
     {
-        if (builder.IsForceLoggingEnabled)
-        {
-            var properties = builder.ForceLoggingProperties ?? ["force"];
-            return loggerConfig
-                .MinimumLevel.Information()
-                .Filter.With(new ForceLoggingInterceptor(levelSwitch, properties)); //Adiciona interceptor de forÁar determinados logs
-        }
+        //if (builder.IsForceLoggingEnabled)
+        //{
+        //    var properties = builder.ForceLoggingProperties ?? ["force"];
+        //    return loggerConfig
+        //        .MinimumLevel.Information()
+        //        .Filter.With(new ForceLoggingInterceptor(levelSwitch, properties)); //Adiciona interceptor de for√ßar determinados logs
+        //}
         return loggerConfig
             .WriteTo.Sink(new LogCountingInterceptor(metricsRegistry)) // Adiciona interceptor de contagem
             .MinimumLevel.ControlledBy(levelSwitch);

@@ -25,7 +25,7 @@ try
     // Usando a nova API que NÃO causa duplicação de logs e suporta ForceLoggingInterceptor
     builder.Host.UseSmartLogFluent(config =>
         config
-        .WithConsole(renderCompact: true)
+        .WithConsole(renderCompact: false)
               //.WithFile()
               .WithMicrosoftOverrides(level: LogEventLevel.Warning)
               .WithProperty("env", "dev")

@@ -6,7 +6,7 @@ using Serilog.Formatting.Compact;
 namespace SmartLog.Core.Extensions;
 
 /// <summary>
-/// Builder fluente que configura diretamente o logger global - SEM DUPLICA«√O
+/// Builder fluente que configura diretamente o logger global - SEM DUPLICA√á√ÉO
 /// </summary>
 public class FluentLoggerBuilder
 {
@@ -21,8 +21,8 @@ public class FluentLoggerBuilder
         _globalConfig = globalConfig ?? throw new ArgumentNullException(nameof(globalConfig));
         _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        // SÛ lÍ configuraÁ„o do appsettings.json se solicitado
-        // Para evitar duplicaÁ„o, por padr„o n„o lemos a configuraÁ„o autom·tica
+        // S√≥ l√™ configura√ß√£o do appsettings.json se solicitado
+        // Para evitar duplica√ß√£o, por padr√£o n√£o lemos a configura√ß√£o autom√°tica
         if (readFromConfiguration)
         {
             _globalConfig.ReadFrom.Configuration(_context.Configuration);
@@ -30,7 +30,7 @@ public class FluentLoggerBuilder
     }
 
     /// <summary>
-    /// Indica se o force logging est· habilitado
+    /// Indica se o force logging est√° habilitado
     /// </summary>
     internal bool IsForceLoggingEnabled => _forceLoggingEnabled;
 
@@ -40,9 +40,9 @@ public class FluentLoggerBuilder
     internal string[] ForceLoggingProperties => _forceLoggingProperties;
 
     /// <summary>
-    /// Adiciona sink do console com template customiz·vel. Ordem, se informar compact=true, n„o considerar· o template informado, se informar withTemplateDefault=true, usar· o template default.
+    /// Adiciona sink do console com template customiz√°vel. Ordem, se informar compact=true, n√£o considerar√° o template informado, se informar withTemplateDefault=true, usar√° o template default.
     /// </summary>
-    /// <param name="template">Template de saÌda (opcional)</param>
+    /// <param name="template">Template de sa√≠da (opcional)</param>
     /// <returns></returns>
     public FluentLoggerBuilder WithConsole(string template = null, bool renderCompact = false, bool withTemplateDefault = false)
     {
@@ -64,10 +64,10 @@ public class FluentLoggerBuilder
     }
 
     /// <summary>
-    /// Adiciona sink de arquivo com configuraÁıes padr„o
+    /// Adiciona sink de arquivo com configura√ß√µes padr√£o
     /// </summary>
     /// <param name="path">Caminho do arquivo (opcional)</param>
-    /// <param name="template">Template de saÌda (opcional)</param>
+    /// <param name="template">Template de sa√≠da (opcional)</param>
     /// <returns></returns>
     public FluentLoggerBuilder WithFile(
         string path = "logs/app-.log",
@@ -84,9 +84,9 @@ public class FluentLoggerBuilder
 
     /// <summary>
     /// Adiciona overrides para suprimir logs do framework Microsoft
-    /// Pacoctes que est„o ocorrendo os overrides, Microsoft, Microsoft.AspNetCore, Microsoft.AspNetCore.Hosting, Microsoft.AspNetCore.Routing, Microsoft.Hosting.Lifetime, System.Net.Http.HttpClient
+    /// Pacoctes que est√£o ocorrendo os overrides, Microsoft, Microsoft.AspNetCore, Microsoft.AspNetCore.Hosting, Microsoft.AspNetCore.Routing, Microsoft.Hosting.Lifetime, System.Net.Http.HttpClient
     /// </summary>
-    /// <param name="level">NÌvel de override (padr„o: Warning)</param>
+    /// <param name="level">N√≠vel de override (padr√£o: Warning)</param>
     /// <returns></returns>
     public FluentLoggerBuilder WithMicrosoftOverrides(LogEventLevel level = LogEventLevel.Warning)
     {
@@ -139,9 +139,9 @@ public class FluentLoggerBuilder
     }
 
     /// <summary>
-    /// Habilita suporte a force logging - logs com propriedades especiais ser„o sempre processados. N„o adicionar valores com carateres especiais, pois o serilog suprimi.
+    /// Habilita suporte a force logging - logs com propriedades especiais ser√£o sempre processados. N√£o adicionar valores com carateres especiais, pois o serilog suprimi.
     /// </summary>
-    /// <param name="specialPropertyNames">Nomes das propriedades especiais (padr„o: "force")</param>
+    /// <param name="specialPropertyNames">Nomes das propriedades especiais (padr√£o: "force")</param>
     /// <returns></returns>
     public FluentLoggerBuilder WithForceLogging(params string[] specialPropertyNames)
     {
