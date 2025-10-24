@@ -90,8 +90,19 @@ public static class HostBuilderExtensions
         //        .MinimumLevel.Information()
         //        .Filter.With(new ForceLoggingInterceptor(levelSwitch, properties)); //Adiciona interceptor de forçar determinados logs
         //}
+
+
+        /*
+         
+         
+
+         
+         */
+
+
+
         return loggerConfig
-            .WriteTo.Sink(new LogCountingInterceptor(metricsRegistry)) // Adiciona interceptor de contagem
-            .MinimumLevel.ControlledBy(levelSwitch);
+                    .WriteTo.Sink(new LogCountingInterceptor(metricsRegistry)) // Adiciona interceptor de contagem
+                    .MinimumLevel.ControlledBy(levelSwitch);
     }
 }
