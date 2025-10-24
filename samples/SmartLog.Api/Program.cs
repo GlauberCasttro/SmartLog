@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using Serilog.Configuration;
 using Serilog.Events;
 using SmartLog.Core.Extensions;
 using static SmartLog.Core.Extensions.SmartLogExtensions;
@@ -25,16 +24,24 @@ try
     // PASSO 2: CONFIGURAÇÃO CORRIGIDA - SEM DUPLICAÇÃO COM FORCE LOGGING!
     // Usando a nova API que NÃO causa duplicação de logs e suporta ForceLoggingInterceptor
     builder.Host.UseSmartLogFluent(config =>
-        config.WithConsoleWithTemplate("[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {NewLine}{Exception}")
+        config
+        .WithConsole(renderCompact: true)
+              //.WithFile()
               .WithMicrosoftOverrides(level: LogEventLevel.Warning)
-              .WithProperty("AppName", "APICorrigida")
-              .WithForceLogging("force")); // 🎯 HABILITA FORCE LOGGING!
+              .WithProperty("env", "dev")
+              .WithProperty("Squad", "Segurança de frota")
+              .WithProperty("Produto", "Central")
+              .WithProperty("AppName", "Central de alertas")
+              .WithFromContext()
+              .WithForceLogging("forcehere")); // 🎯 SE A VERBOSIDADE ATUAL FOR ERROR -> Força logs INFO que tiver a propriedade "force-here" = true
+
+    //builder.Host.UseSmartLogFluent();
 
     var app = builder.Build();
-    
+
     // PASSO 3: Middleware SmartLog primeiro
     app.UseMiddlewareSmartLogEconomy();
-    
+
     // Depois o Serilog request logging (se necessário)
     // app.UseSerilogRequestLogging();
 
